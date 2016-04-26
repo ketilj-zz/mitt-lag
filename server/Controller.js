@@ -1,36 +1,64 @@
 var Firebase = require('firebase');
-var fbRef = new Firebase('https://teamkom.firebaseio.com/matches');
+var firebaseUrl = 'https://teamkom.firebaseio.com';
+var notifications = require('./Notifications');
+var cron = require('node-schedule');
+var cache = require('memory-cache');
+var _ = require('lodash');
+var moment = require('moment');
 
-var api_key = 'key-9813a87e1448c51b12f4e90f3f078ae8';
-var domain = 'sandbox00e0ac6a706f4059962d0696a0d2245d.mailgun.org';
-var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+var rule = new cron.RecurrenceRule();
+rule.second = 5;
 
 module.exports.homepage = function(req, res) {
-	var matches = fetchMatches();
-	console.log(matches);
-	res.render('index', { title: 'Fjellhamar Jenter 07', matches: matches });
+	var fbRef = new Firebase(firebaseUrl);
+	fbRef.once("value", function(snapshot) {
+		console.log(snapshot.val().coaches);	
+		cache.put('matches', snapshot.val().matches);
+		cache.put('players', snapshot.val().players);
+		cache.put('coaches', snapshot.val().coaches);
+	});
+	res.render('index', { title: 'Fjellhamar Jenter 07'});
 };
 
-
-function fetchMatches() {
-	var matches = fbRef.once("value", function(snapshot) {
-		return snapshot.val();
+cron.scheduleJob(rule, function() {
+	var matches = cache.get('matches');
+	var matchesInTwoDays = _.filter(matches, function(match) {
+		if (isMatchInTwoDays(match)) {
+			return match;
+		}
 	});
-	console.log("--> "+ JSON.stringify(matches));
-	return matches;
-};
-
-fbRef.on('child_added', function(snapshot, prevchildname){
-
-    var data = {
-	  from: 'Ketil Jensen <postmaster@sandbox00e0ac6a706f4059962d0696a0d2245d.mailgun.org	>',
-	  to: 'ketilj@gmail.com',
-	  subject: 'Hello',
-	  text: 'Testing some Mailgun awesomness!'
-	};
-
-	mailgun.messages().send(data, function (error, body) {
-	  console.log(body);
+	
+	var players = cache.get('players');
+	var coaches = cache.get('coaches');
+	
+	_.forEach(matchesInTwoDays, function(match) {
+		//get the players who is going to players
+		var playing = _.filter(players, function(player) {
+			if (_.includes([match.group1, match.group2], player.group)) {
+				return player;
+			}
+		});
+		
+		var coaching = _.filter(coaches, function(coach) {
+			console.log(match.group  + " " + coach.group);
+			if (_.includes([match.group1, match.group2], coach.group)) {
+				return coach;
+			}
+		});
+		
+		notifications.sendEmail(match, playing, coaching);
 	});
-
 });
+
+function isMatchInTwoDays(match) {
+	var matchDate = moment(match.date, 'MM/DD/YYYY');
+	var now = moment();
+	var twoDaysAhead = now.add(2, 'days');
+	return moment(now).isSame(matchDate, 'day');
+};
+
+/*
+fbRef.on('child_added', function(snapshot, prevchildname){
+	var matches = snapshot.val();
+});
+*/
