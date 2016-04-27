@@ -14,7 +14,7 @@ module.exports.sendEmail = function(match, players, coaches) {
     console.log("---> " + meetingInfo);
     console.log(JSON.stringify(coaches, null, 2));
     
-    client.sendEmailWithTemplate({
+    /*client.sendEmailWithTemplate({
         "From": "ketil@leverage51.no",
         "To": "ketilj@gmail.com",
         "TemplateId": 583784,
@@ -28,7 +28,7 @@ module.exports.sendEmail = function(match, players, coaches) {
             "mail": "ketilj@gmail.com",
             "info": meetingInfo,
             "trainer": coaches
-        }
+        }*/
     });
 };
 
