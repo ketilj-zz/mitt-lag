@@ -1,6 +1,6 @@
 var Firebase = require('firebase');
 var firebaseUrl = 'https://teamkom.firebaseio.com';
-var notifications = require('./server/Notifications');
+var notifications = require('./Notifications');
 var cron = require('node-schedule');
 var cache = require('memory-cache');
 var _ = require('lodash');
