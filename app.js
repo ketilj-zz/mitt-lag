@@ -40,6 +40,8 @@ app.use(function(req, res, next) {
     next(err);
 });
 
+console.log("Kommer hit");
+
 /// error handlers
 
 // development error handler
