@@ -2,19 +2,14 @@ var postmark = require("postmark");
 var client = new postmark.Client("8e1d7050-2645-4060-971b-fb7631696c37");
 var _ = require('lodash');
 var moment = require('moment');
+var dateUtil = require('./DateUtil');
 
-module.exports.sendEmail = function(match, players, coaches) {
-    console.log("matches " + JSON.stringify(match, null));
-    var to = _.map(players, 'email1');
-    console.log("---> " + to);
-    
+module.exports.sendMatchEmail = function(match, players, coaches) {
     var opposition = getOppositionTeam(match);
     var meetingInfo = getMeetingInfo(match);
-    var date = moment(match.date).format('DD.MM.YYYY');
-    console.log("---> " + meetingInfo);
-    console.log(JSON.stringify(coaches, null, 2));
-    
-    /*client.sendEmailWithTemplate({
+    var date = dateUtil.format(match.date, "DD.MM.YYYY");
+    var parents = this.parentsToNotify(players);
+    client.sendEmailWithTemplate({
         "From": "ketil@leverage51.no",
         "To": "ketilj@gmail.com",
         "TemplateId": 583784,
@@ -28,7 +23,32 @@ module.exports.sendEmail = function(match, players, coaches) {
             "mail": "ketilj@gmail.com",
             "info": meetingInfo,
             "trainer": coaches
-        }*/
+        }
+    });
+};
+
+module.exports.parentsToNotify = function(players) {
+    return _.map(players, "email").toString(); 
+};
+
+module.exports.sendFixtureList = function(player, playing) { 
+    client.sendEmailWithTemplate({
+        "From": "ketil@leverage51.no",
+        "To": player.email,
+        "TemplateId": 594221,
+        "TemplateModel": {
+            "player": {
+                "name": player.firstName,
+                "group": player.group
+            },
+            "match": playing
+        }
+    }, function(error, success) {
+        if(error) {
+            console.error("Unable to send via postmark: " + error.message);
+            return;
+        }
+        console.info("Sent to postmark for delivery")
     });
 };
 
