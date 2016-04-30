@@ -5,14 +5,19 @@ var moment = require('moment');
 var email = require('./Email');
 var dateUtil = require('./DateUtil');
 
-module.exports.assignMatchesToPlayers = function(matches, players) {
+/*module.exports.assignMatchesToPlayers = function(matches, players) {
 	_.forEach(players, function(player) {
-		var matchesForPlayer = findMatches(matches, player);
+		var matchesForPlayer = 
 		_.assign(player, matchesForPlayer);
-		console.log('player: ' + player.name + JSON.stringify(player, null, 2));
-		email.sendFixtureList(player, matchesForPlayer);
 	});
-	
+	return players;
+};*/
+
+module.exports.fixtureListBatch = function(matches, players) {
+	_.forEach(players, function(player) {
+		var matches = findMatches(matches, player);
+		email.sendFixtureList(player, matches);
+	});
 };
 
 module.exports.announceMatches = function(matches, players, coaches) {
@@ -68,14 +73,13 @@ function isMatchInTwoDays(match) {
 	return moment(now).isSame(matchDate, 'day');
 };
 
-function findMatches(matches, player) {
-	return _.filter(matches, function(match) {
+module.exports.findMatches = function (matches, player) {
+	var m = _.filter(matches, function(match) {
 		if (_.includes([match.group1, match.group2], player.group)) {
 			var prettyDate = dateUtil.format(match.date, "DD.MM.YYYY");
-			console.log("prettyDate " + prettyDate);
 			_.assign(match, {prettyDate: prettyDate});
-            console.log('---> ' + JSON.stringify(match, null, 2));
 			return match;
 		}
 	});
+	return m;
 }
