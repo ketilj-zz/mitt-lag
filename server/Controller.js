@@ -9,6 +9,7 @@ module.exports.homepage = function(req, res) {
 	var fbRef = new Firebase(firebaseUrl);
 	fbRef.once("value", function(snapshot) {
 		console.log(snapshot.val().coaches);	
+		console.log(snapshot.val().matches);
 		cache.put('matches', snapshot.val().matches);
 		cache.put('players', snapshot.val().players);
 		cache.put('coaches', snapshot.val().coaches);
