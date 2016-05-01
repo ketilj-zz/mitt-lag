@@ -11,7 +11,7 @@ module.exports.sendMatchEmail = function(match, players, coaches) {
     var parents = this.parentsToNotify(players);
     client.sendEmailWithTemplate({
         "From": "ketil@leverage51.no",
-        "To": "ketilj@gmail.com",
+        "To": parents,
         "TemplateId": 583784,
         "TemplateModel": {
             "motstander": opposition,
