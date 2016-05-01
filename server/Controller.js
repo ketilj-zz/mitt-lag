@@ -17,7 +17,7 @@ module.exports.homepage = function(req, res) {
 	res.render('index', { title: 'Fjellhamar Jenter 07'});
 };
 
-schedule.scheduleJob({hour: 15, minute: 20}, function(){
+schedule.scheduleJob({hour: 15, minute: 30}, function(){
 	console.log("scheduled job: Announce Matches");
 	var matches = cache.get('matches');
 	var players = cache.get('players');
