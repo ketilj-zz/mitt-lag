@@ -33,8 +33,7 @@ module.exports.parentsToNotify = function(players) {
 };
 
 module.exports.sendFixtureList = function(player, playing) { 
-    if (player.firstName === "Lina" || player.firstName === 'Helmine' 
-        || player.firstName === 'Amanda' || player.firstName === 'Kaja') {
+    if (player.firstName === "Nora" ) {
         client.sendEmailWithTemplate({
             "From": "ketil@leverage51.no",
             "To": player.email,
