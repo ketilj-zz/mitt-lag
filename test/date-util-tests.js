@@ -11,4 +11,15 @@ describe('Date utililty tests', function() {
       expect(prettyDate).to.equal("26.04.2016");
     });
   });
+  
+  describe('#Various tests for date utilities', function() {
+     it('check if a date is 2 days in the future', function() {
+        var date = new Date();
+        var month = date.getMonth() + 1;
+        var todayPlussTwoDays = date.getDate() + 2;
+        var dateString = month + "/" + todayPlussTwoDays + "/" + date.getFullYear();
+        console.log(dateString);
+        expect(dateUtil.isDateInTwoDays(dateString)).to.be.true;
+     });
+  });
 });

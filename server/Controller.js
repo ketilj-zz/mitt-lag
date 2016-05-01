@@ -25,11 +25,11 @@ schedule.scheduleJob({hour: 14, minute: 00}, function(){
 	matchNotifications.announceMatches(matches, players, coaches);
 });
 
-/*
-schedule.scheduleJob({hour: 09, minute: 39}, function(){
+
+schedule.scheduleJob({hour: 13, minute: 30}, function(){
 	console.log('shedule job: AssignMatchesToPlayers');
 	var players = cache.get('players');
 	var matches = cache.get('matches');
+	console.log("matches " + JSON.stringify(matches, null,2));
 	matchNotifications.assignMatchesToPlayers(matches, players);
 });
-*/

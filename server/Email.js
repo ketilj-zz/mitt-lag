@@ -32,24 +32,27 @@ module.exports.parentsToNotify = function(players) {
 };
 
 module.exports.sendFixtureList = function(player, playing) { 
-    client.sendEmailWithTemplate({
-        "From": "ketil@leverage51.no",
-        "To": player.email,
-        "TemplateId": 594221,
-        "TemplateModel": {
-            "player": {
-                "name": player.firstName,
-                "group": player.group
-            },
-            "match": playing
-        }
-    }, function(error, success) {
-        if(error) {
-            console.error("Unable to send via postmark: " + error.message);
-            return;
-        }
-        console.info("Sent to postmark for delivery")
-    });
+    if (player.firstName === "Lina" || player.firstName === 'Helmine' 
+        || player.firstName === 'Amanda' || player.firstName === 'Kaja') {
+        client.sendEmailWithTemplate({
+            "From": "ketil@leverage51.no",
+            "To": player.email,
+            "TemplateId": 594221,
+            "TemplateModel": {
+                "player": {
+                    "name": player.firstName,
+                    "group": player.group
+                },
+                "match": playing
+            }
+        }, function(error, success) {
+            if(error) {
+                console.error("Unable to send via postmark: " + error.message);
+                return;
+            }
+            console.info("Sent to postmark for delivery")
+        });
+    }
 };
 
 function getMeetingInfo(match) {
