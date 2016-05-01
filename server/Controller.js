@@ -27,7 +27,7 @@ schedule.scheduleJob({hour: 12, minute: 00}, function(){
 });
 
 
-schedule.scheduleJob({hour: 11, minute: 55}, function(){
+schedule.scheduleJob({hour: 14, minute: 35}, function(){
 	console.log('shedule job: AssignMatchesToPlayers');
 	var players = cache.get('players');
 	var matches = cache.get('matches');

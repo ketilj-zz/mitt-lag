@@ -16,6 +16,7 @@ module.exports.sendMatchEmail = function(match, players, coaches) {
         "TemplateModel": {
             "motstander": opposition,
             "dato": date,
+            "dag": match.day,
             "tid": match.time,
             "sted": match.location,
             "trener": "Ketil",
