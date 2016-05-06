@@ -18,7 +18,7 @@ module.exports.homepage = function(req, res) {
 };
 
 
-schedule.scheduleJob({hour: 15, minute: 30}, function(){
+schedule.scheduleJob({hour: 12, minute: 00}, function(){
 	console.log("scheduled job: Announce Matches");
 	var matches = cache.get('matches');
 	var players = cache.get('players');
@@ -27,12 +27,12 @@ schedule.scheduleJob({hour: 15, minute: 30}, function(){
 	matchNotifications.announceMatches(matches, players, coaches);
 });
 
-/*
-schedule.scheduleJob({hour: 21, minute: 19}, function(){
+/**
+schedule.scheduleJob({hour: 20, minute: 48}, function(){
 	console.log('shedule job: AssignMatchesToPlayers');
 	var players = cache.get('players');
 	var matches = cache.get('matches');
 	console.log("matches " + JSON.stringify(matches, null,2));
 	matchNotifications.assignMatchesToPlayers(matches, players);
 });
-*/
+ */
