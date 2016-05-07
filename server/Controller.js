@@ -18,7 +18,7 @@ module.exports.homepage = function(req, res) {
 };
 
 
-schedule.scheduleJob({hour: 12, minute: 00}, function(){
+schedule.scheduleJob({hour: 19, minute: 00}, function(){
 	console.log("scheduled job: Announce Matches");
 	var matches = cache.get('matches');
 	var players = cache.get('players');
