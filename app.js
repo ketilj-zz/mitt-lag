@@ -12,6 +12,8 @@ var users = require('./routes/user');
 
 var app = express();
 
+var http = require("http");
+
 var env = process.env.NODE_ENV || 'development';
 app.locals.ENV = env;
 app.locals.ENV_DEVELOPMENT = env == 'development';
@@ -66,6 +68,12 @@ app.use(function(err, req, res, next) {
         title: 'error'
     });
 });
+
+
+setInterval(function() {
+    console.log("keep alive");
+    http.get("http://teamkom.herokuapp.com");
+}, 300000); // every 5 minutes (300000)
 
 
 module.exports = app;
