@@ -10,3 +10,10 @@ module.exports.isDateInTwoDays = function(date) {
 	var twoDaysAhead = now.add(2, 'days');
 	return moment(now).isSame(matchDate, 'day');
 };
+
+module.exports.isDateInOneDay = function(date) {
+	var matchDate = moment(date, 'MM/DD/YYYY');
+	var now = moment();
+	var twoDaysAhead = now.add(1, 'days');
+	return moment(now).isSame(matchDate, 'day');
+};
