@@ -63,7 +63,7 @@ function findMatchesForPlayer(matches, player) {
 
 function findMatchesToAnnounce(matches) {
 	return _.filter(matches, function(match) {
-		if (dateUtil.isDateInOneDay(match.date)) {
+		if (dateUtil.isDateInTwoDays(match.date)) {
 			return match;
 		}
 	});
